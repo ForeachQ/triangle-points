@@ -1,4 +1,6 @@
 <?php
+//php 7.4
+
 require_once "Point.php";
 require_once "Triangle.php";
 
