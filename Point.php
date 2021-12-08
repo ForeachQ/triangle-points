@@ -1,7 +1,7 @@
 <?php
 class Point {
-    public $x;
-    public $y;
+    public float $x;
+    public float $y;
    
     function __construct($x, $y) {
         $this->x = $x;
