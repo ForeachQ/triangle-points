@@ -14,6 +14,7 @@ function parsePointsFromString($string_data, $delimiter): array
     $points = array();
     for ($i = 0; $i < count($stringPoints); $i++) {
         $pointCoords = explode(",", $stringPoints[$i]);
+        // пропуск неправильно заданных точек
         if (count($pointCoords) != 2) {
             continue;
         }
@@ -22,7 +23,8 @@ function parsePointsFromString($string_data, $delimiter): array
 
         // пропуск точек неудовлетворяющих ограничениям задания
         if (-10 <= $x && $x <= 10 && -10 <= $y && $y <= 10) {
-            $points[] = new Point(round($x, 7), round($y, 7));
+            // обрабатываем только 7 знаков после запятой
+            $points[] = new Point(intval($x * 10000000) / 10000000, intval($y * 10000000) / 10000000);
         }
 
     }
@@ -31,6 +33,7 @@ function parsePointsFromString($string_data, $delimiter): array
 
 function isPointInTriangle($point, $triangle): bool
 {
+    // косое произведение (псевдоскалярное) векторов
     $k1 = ($triangle->firstPoint->x - $point->x) * ($triangle->secondPoint->y - $triangle->firstPoint->y) -
         ($triangle->secondPoint->x - $triangle->firstPoint->x) * ($triangle->firstPoint->y - $point->y);
 
@@ -51,7 +54,6 @@ $points = parsePointsFromString($file_text, "\n");
 if (count($points) < 4) {
     exit("Wrong number of input points (must be >= 4).");
 }
-
 
 try {
     $triangle = new Triangle($points[0], $points[1], $points[2]);
